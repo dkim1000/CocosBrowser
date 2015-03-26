@@ -1,39 +1,42 @@
 package cocosbrowser.dkim.com.cocosbrowser;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
+
+import cocosbrowser.dkim.com.cocosbrowser.Controllers.SMSReceiver;
+import cocosbrowser.dkim.com.cocosbrowser.Data.DataObjects;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity{
+
+    SMSReceiver mSMSReceiver;
+
+    WebView mMainWebView;
+    Button mGoBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        mSMSReceiver = new SMSReceiver();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        mMainWebView = (WebView)findViewById(R.id.main_webView);
+        mMainWebView.getSettings().setJavaScriptEnabled(true);
+        mMainWebView.loadDataWithBaseURL(null, DataObjects.html, DataObjects.mime, DataObjects.encoding, null);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        mGoBtn = (Button)findViewById(R.id.btn_go);
+        mGoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSMSReceiver.sendSMS("15192815745", "waddaup");
+                //send request and shit
+                //then update the webview
+                //then update the webview
+            }
+        });
     }
 }
